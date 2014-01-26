@@ -15,7 +15,7 @@ public class ScannerRunnable implements Runnable {
 		this.portScanner = portScanner;
 		this.startPort = startPort;
 		this.endPort = endPort;
-		System.out.println("Created a Task <"+startPort + " , " + endPort +">");
+		//System.out.println("Created a Task <"+startPort + " , " + endPort +">");
 	}
 
 	@Override

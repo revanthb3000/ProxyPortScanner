@@ -4,10 +4,14 @@ import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.util.ArrayList;
 
+import org.iitg.rb.main.MainClass;
+
 /**
- * This the port scanner class. Contains functions that will scan the ports and find an open one !
+ * This the port scanner class. Contains functions that will scan the ports and
+ * find an open one !
+ * 
  * @author RB
- *
+ * 
  */
 public class PortScanner {
 
@@ -37,15 +41,23 @@ public class PortScanner {
 
 	/**
 	 * Iterates through a range and finds open ports.
-	 * @param startPort Starting value of range.
-	 * @param endPort Last value of range.
+	 * 
+	 * @param startPort
+	 *            Starting value of range.
+	 * @param endPort
+	 *            Last value of range.
 	 * @return ArrayList of Integers that are open ports on this IP Address.
 	 */
 	public ArrayList<Integer> findOpenPorts(int startPort, int endPort) {
 		ArrayList<Integer> openPorts = new ArrayList<Integer>();
 		for (int port = startPort; port <= endPort; port++) {
-			if(isPortOpen(port)){
-				System.out.println(port);
+			if (isPortOpen(port)) {
+				if (MainClass.getTextArea() != null) {
+					MainClass.getTextArea().append(ipAddress + ":" + port + "\n");
+				}
+				else{
+					System.out.println(ipAddress + ":" + port);
+				}
 				openPorts.add(port);
 			}
 		}
@@ -53,8 +65,11 @@ public class PortScanner {
 	}
 
 	/**
-	 * Simple logic. Try connecting to the port and if there's no exception, then it's open !! 
-	 * @param port Port to be scanned
+	 * Simple logic. Try connecting to the port and if there's no exception,
+	 * then it's open !!
+	 * 
+	 * @param port
+	 *            Port to be scanned
 	 * @return True if the port is open. False, otherwise.
 	 */
 	public boolean isPortOpen(int port) {
