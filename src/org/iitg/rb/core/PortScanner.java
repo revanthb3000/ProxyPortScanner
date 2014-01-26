@@ -44,9 +44,10 @@ public class PortScanner {
 	public ArrayList<Integer> findOpenPorts(int startPort, int endPort) {
 		ArrayList<Integer> openPorts = new ArrayList<Integer>();
 		for (int port = startPort; port <= endPort; port++) {
-			System.out.println(port);
-			if(isPortOpen(port))
+			if(isPortOpen(port)){
+				System.out.println(port);
 				openPorts.add(port);
+			}
 		}
 		return openPorts;
 	}

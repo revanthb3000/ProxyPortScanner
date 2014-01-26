@@ -1,12 +1,55 @@
 package org.iitg.rb.main;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.iitg.rb.concurrency.ScannerRunnable;
 import org.iitg.rb.core.PortScanner;
 
 public class MainClass {
+
+	public static void main(String[] args) {
+		//usualCase("172.16.27.15");
+		usualCase("127.0.0.1");
+	}
 	
-	public static void main(String[] args){
-		PortScanner portScanner = new PortScanner("172.16.27.15", 200);
-		System.out.println(portScanner.findOpenPorts(3500, 3600));
+	public static void usualCase(String ipAddress){
+		int timeOut = 200;
+		int numOfThreads = 100;
+		int startPort = 1000;
+		int endPort = 5000;
+		
+		scanPortsParallel(ipAddress, timeOut, numOfThreads, startPort, endPort);
+		
+		startPort = 5001;
+		endPort = 9999;
+		scanPortsParallel(ipAddress, timeOut, numOfThreads, startPort, endPort);		
+	}
+
+	public static void scanPortsParallel(String ipAddress, int timeOut,
+							int numOfThreads, int startPort, int endPort) {
+
+		PortScanner portScanner = new PortScanner(ipAddress, timeOut);
+		List<Thread> threads = new ArrayList<Thread>();
+		int portRangeSize = (endPort - startPort) / numOfThreads;
+		for (int i = 0; i < numOfThreads; i++) {
+			Runnable task = new ScannerRunnable(portScanner, startPort, startPort
+					+ portRangeSize);
+			Thread worker = new Thread(task);
+			worker.setName(String.valueOf(i));
+			worker.start();
+			threads.add(worker);
+			startPort += (portRangeSize + 1);
+		}
+		int running = 0;
+		do {
+			running = 0;
+			for (Thread thread : threads) {
+				if (thread.isAlive()) {
+					running++;
+				}
+			}
+		} while (running > 0);
 	}
 
 }
