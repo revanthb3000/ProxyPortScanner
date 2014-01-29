@@ -22,10 +22,62 @@ public class MainClass {
 
 	public static void main(String[] args) {
 		//usualCase("172.16.27.15");
-		getOpenPorts("127.0.0.1");
+		//getOpenPorts("127.0.0.1");
+		scanRange("172.16.17.90", "172.16.17.100");
+	}
+	
+	public static void scanRange(String startingIpAddress, String endingIpAddress){
+		String currentIpAddress = startingIpAddress;
+		getOpenPorts(currentIpAddress);
+		while(true){
+			currentIpAddress = getNextIpAddress(currentIpAddress);
+			getOpenPorts(currentIpAddress);
+			if(currentIpAddress.equals(endingIpAddress)){
+				break;
+			}
+		}
+	}
+	
+	public static String getNextIpAddress(String ipAddress){
+		String newIpAddress = "";
+		ArrayList<Integer> ipComponents = new ArrayList<Integer>();
+		for(String fragment : ipAddress.split("\\.")){
+			ipComponents.add(Integer.parseInt(fragment));
+		}
+		int carryOver = 120;
+		int component = ipComponents.get(3) + 1;
+		carryOver = component/256;
+		component = component%256;
+		newIpAddress = "." + component +  newIpAddress;
+		
+		component = ipComponents.get(2);
+		if(carryOver!=0){
+			component++;
+			carryOver = component/256;
+			component = component%256;			
+		}
+		newIpAddress = "." + component +  newIpAddress;
+		
+		component = ipComponents.get(1);
+		if(carryOver!=0){
+			component++;
+			carryOver = component/256;
+			component = component%256;			
+		}
+		newIpAddress = "." + component +  newIpAddress;
+		
+		component = ipComponents.get(0);
+		if(carryOver!=0){
+			component++;
+			carryOver = component/256;
+			component = component%256;			
+		}
+		newIpAddress = component +  newIpAddress;
+		return newIpAddress;
 	}
 	
 	public static void getOpenPorts(String ipAddress){
+		System.out.println("Now scanning : " + ipAddress + "\n");
 		int timeOut = 200;
 		int numOfThreads = 100;
 		

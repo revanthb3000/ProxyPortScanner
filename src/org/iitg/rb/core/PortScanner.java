@@ -21,7 +21,7 @@ public class PortScanner {
 	private String ipAddress;
 
 	/**
-	 * TimeOut value. Set it to 200ms for good performence.
+	 * TimeOut value. Set it to 200ms for good performance.
 	 */
 	private int timeOut;
 
