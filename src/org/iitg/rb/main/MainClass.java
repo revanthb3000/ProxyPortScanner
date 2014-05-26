@@ -23,7 +23,7 @@ public class MainClass {
 	public static void main(String[] args) {
 		//usualCase("172.16.27.15");
 		//getOpenPorts("127.0.0.1");
-		scanRange("172.16.17.90", "172.16.17.100");
+		scanRange("172.16.52.80", "172.16.52.300");
 	}
 	
 	public static void scanRange(String startingIpAddress, String endingIpAddress){
